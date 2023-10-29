@@ -20,7 +20,16 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        use: [ MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader' ]
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: '@import "./src/client/styles/config";',
+            }
+          } 
+        ]
       }
     ]
   },
@@ -32,6 +41,6 @@ module.exports = {
       template: "./src/client/views/index.html",
       filename: "./index.html",
     }),
-    new MiniCssExtractPlugin({ filename: "[name].css" })
+    new MiniCssExtractPlugin({ filename: "styles.css" })
   ]
 }

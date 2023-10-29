@@ -1,0 +1,41 @@
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: 
+  "header"
+  "main"
+  "footer";
+  height: 100%;
+  min-height: 100vh;
+}
+
+.header {
+  grid-area: header;
+}
+
+.main {
+  grid-area: main;
+}
+
+.footer {
+  grid-area: footer;
+}
+
+.page-width {
+  max-width: 1700px;
+  padding: 0 30px;
+  margin: auto;
+
+  @include bp(sm) {
+    padding: 0 20px;
+  }
+}

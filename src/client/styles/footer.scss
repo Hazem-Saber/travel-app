@@ -1,0 +1,16 @@
+.footer {
+  padding: 24px 32px;
+  background-color: $dark-secondary;
+  color: $white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @include bp(sm) {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 16px;
+    padding: 16px;
+  }
+}

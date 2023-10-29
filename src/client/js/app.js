@@ -1,30 +1,65 @@
+import { checkLocation } from './checkLocation'
+import { checkDate } from './checkDate'
+
 // Global Variables
-const baseURL = 'https://api.openweathermap.org/data/2.5/weather?zip=';
-const apiKey = '&appid=d2f25ee0d51c056032901095ad1cac2c&units=imperial';
-const generateBtn = document.querySelector('#generate');
+const geonamesBase = 'http://api.geonames.org/searchJSON?q=';
+const geonamesKey = '&maxRows=1&username=hazemsss';
+const warningLocation = document.querySelector('.form__warning--location');
+const warningDate = document.querySelector('.form__warning--date');
 
-// Create a new date instance dynamically with JS
-let newDate = (new Date()).toLocaleDateString('en-US');
+// Main Function
+const submitForm = async (e) => {
+  const tripLocation =  document.querySelector('#form-location').value;
+  const tripDate =  document.querySelector('#form-date').value;
 
-// Event listener to add function to existing HTML DOM element
-generateBtn.addEventListener('click', generateData);
+  e.preventDefault();
 
-// Function called by event listener
-function generateData() {
-  const zipCode =  document.querySelector('#zip').value;
-  const feelings =  document.querySelector('#feelings').value;
+  // reset
+  warningLocation.classList.remove('active');
+  warningDate.classList.remove('active');
 
-  getWeather(baseURL, zipCode, apiKey)
-  .then(data => postData('/add', {date: newDate, temp: data.main.temp, content: feelings}))
-  .then(() => updateUI());
+  // Check Location & Date
+  if (tripLocation && tripDate) {
+    if (checkLocation(tripLocation)) {
+      if (checkDate(tripDate)) {
+
+        // geonames API CAll
+        getGeonames(geonamesBase, tripLocation, geonamesKey);
+
+      } else {
+        warningDate.classList.add('active');
+      }
+    } else {
+      warningLocation.classList.add('active');
+    }
+
+  } else {
+    alert('Please fill form inputs!')
+  }
+  
+
+  // getWeather(baseURL, zipCode, apiKey)
+  // .then(data => postData('/add', {date: newDate, temp: data.main.temp, content: feelings}))
+  // .then(() => updateUI());
 }
 
 // Function to GET Web API Data
-const getWeather = async (baseURL, zipCode, apiKey) => {
-  const res = await fetch(baseURL + zipCode + apiKey);
+const getGeonames = async (baseURL, location, apiKey) => {
+  const res = await fetch(baseURL + location + apiKey);
   try {
     const data = await res.json();
-    return data;
+
+    if (data.totalResultsCount > 0) {
+      const cityData = {
+        latitude: data.geonames[0].lat,
+        longitude: data.geonames[0].lng,
+        country: data.geonames[0].countryName,
+      }
+      console.log(cityData);
+      return cityData;
+    } else {
+      warningLocation.classList.add('active');
+    }
   } catch (error) {
     console.error('error', error)
   } 
@@ -65,10 +100,4 @@ const updateUI = async () => {
   }
 };
 
-// Main Function
-const handleSubmit = () => {
-  console.log('Handle Submit function from app.js file');
-  alert('Welcome from app.js file!')
-}
-
-export { handleSubmit }
+export { submitForm }

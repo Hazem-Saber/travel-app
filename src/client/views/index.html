@@ -1,32 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Weather Journal</title>
-<link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Travel App</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Oswald:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
-<div id = "app">
-  <div class ="holder headline">
-    Weather Journal App
+  <div class="app">
+    <!-- Start Header -->
+    <header class="header">
+      <h1 class="header__logo font-h1">Travel Hacks App</h1>
+    </header>
+    <!-- End Header -->
+
+    <!-- Start Main -->
+    <main class="main">
+      <div class="page-width container">
+        <div class="app__form-container">
+          <form class="app__form">
+            <h3 class="font-h3">Trip Information</h3>
+            <div class="form__field">
+              <label class="font-h4" for="form-location">Location</label>
+              <input class="form__input font-body" type="text" id="form-location" placeholder="E.g. London">
+              <p class="form__warning form__warning--location font-body">Please enter a valid location</p>
+            </div>
+            <div class="form__field">
+              <label class="font-h4" for="form-date">Departing Date</label>
+              <input class="form__input font-body" type="date" id="form-date">
+              <p class="form__warning form__warning--date font-body">Please enter a date in the future</p>
+            </div>
+            <input id="form-submit" class="btn-primary" type="submit" value="Submit">
+          </form>
+        </div>
+
+        <div class="app__results-container"></div>
+      </div>
+    </main>
+    <!-- End Main -->
+
+    <!-- Start Footer -->
+    <footer class="footer">
+      <h2 class="footer__logo font-h2">Travel Hacks App</h2>
+      <p class="font-body">Capstone Project - Nanodegree Program</p>
+    </footer>
+    <!-- End Footer -->
   </div>
-  <div class ="holder zip">
-    <label for="zip">Enter Zipcode here</label>
-    <input type="text" id="zip" placeholder="enter zip code here">
-  </div>
-  <div class ="holder feel">
-    <label for="feelings">How are you feeling today?</label>
-    <textarea class= "myInput" id="feelings" placeholder="Enter your feelings here" rows="9" cols="50"></textarea>
-    <button id="generate" type = "submit"> Generate </button>
-  </div>
-  <div class ="holder entry">
-    <div class = "title">Most Recent Entry</div>
-    <div id = "entryHolder">
-      <div id = "date"></div> 
-      <div id = "temp"></div>
-      <div id = "content"></div>
-    </div>
-  </div>
-</div>
 </body>
 </html>

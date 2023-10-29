@@ -1,0 +1,77 @@
+.main {
+  padding: 80px 0;
+
+  @include bp(md) {
+    padding: 40px 0;
+  }
+
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+
+    @include bp(sm) {
+      flex-direction: column;
+    }
+
+    .app__form-container {
+      width: 50%;
+
+      @include bp(sm) {
+        width: 100%;
+      }
+
+      .app__form {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        padding: 32px;
+        background: $grey-light;
+        border-radius: 10px;
+
+        @include bp(md) {
+          padding: 20px;
+        }
+
+        .form__field {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+
+          .form__input {
+            outline: none;
+            box-shadow: none;
+            border: none;
+            border-radius: 5px;
+            background-color: $white;
+            padding: 8px;
+          }
+
+          .form__warning {
+            display: none;
+            color: $red;
+
+            &.active {
+              display: block;
+            }
+          }
+        }
+
+      }
+    }
+
+    .app__results-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      padding: 32px;
+      background: $grey-light;
+      border-radius: 10px;
+
+      @include bp(md) {
+        padding: 20px;
+      }
+    }
+  }
+}

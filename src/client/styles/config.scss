@@ -1,0 +1,170 @@
+@use "sass:map";
+
+// Start Media Breakpoints
+$screen-breakpoints: (
+  xs: 450px,
+  sm: 750px,
+  md: 990px,
+  lg: 1200px,
+  xl: 1400px,
+  xxl: 1600px,
+  max: 1920px,
+);
+
+@function bp-val($name) {
+  @if type-of($name) == 'number' {
+    @return $name;
+  }
+  $val: map.get($screen-breakpoints, $name);
+  @if not $val {
+    @error 'Breakpoint #{$name} not found';
+  }
+  @return $val;
+}
+
+@mixin bp($name) {
+  $val: bp-val($name);
+  @media (max-width: ($val - 0.02)) {
+    @content;
+  }
+}
+// End Media Breakpoints
+
+// Start Colors
+$dark-primary: #1A1A1A;
+$dark-secondary: #222629;
+$grey: #DEE0E3;
+$grey-dark: #9F9F9F;
+$grey-light: #E9EAEC;
+$grey-very-light: #F8F8F8;
+$white: #fff;
+$cream: #FFFAF1;
+$red: #EC4536;
+$green: #448242;
+// End Colors
+
+// Start Typography
+.body {
+  font-family: 'Lora', serif;
+  font-weight: 400;
+  color: var(--dark-primary);
+}
+
+.font-h1,
+.font-h2,
+.font-h5,
+.font-h6 {
+  font-family: 'Oswald', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1.6em;
+}
+
+.font-h1 {
+  font-size: 32px;
+  @include bp(md) {
+    font-size: 20px;
+  }
+}
+
+.font-h2 {
+  font-size: 24px;
+  @include bp(md) {
+    font-size: 18px;
+  }
+}
+
+.font-h3,
+.font-h4 {
+  font-family: 'Lora', serif;
+  font-weight: 700;
+  line-height: 1.6em;
+}
+
+.font-h3 {
+  font-size: 30px;
+  @include bp(md) {
+    font-size: 20px;
+  }
+}
+
+.font-h4 {
+  font-size: 20px;
+  @include bp(md) {
+    font-size: 16px;
+  }
+}
+
+.font-h5 {
+  font-size: 16px;
+  @include bp(md) {
+    font-size: 14px;
+  }
+}
+
+.font-h6 {
+  font-size: 14px;
+  @include bp(md) {
+    font-size: 12px;
+  }
+}
+
+.font-body {
+  font-family: 'Lora', serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.6em;
+  @include bp(md) {
+    font-size: 16px;
+  }
+}
+// End Typography
+
+// Start Utilities
+.list-unstyled {
+  list-style: none;
+}
+
+.link,
+.link:hover, 
+.link:focus,
+.link:visited,
+.link:focus-visible {
+  text-decoration: none;
+  outline: none;
+  box-shadow: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+// End Utilities
+
+// Start components
+.btn-primary {
+  padding: 16px;
+  font-size: 16px;
+  line-height: 1.6em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: $dark-secondary;
+  color: $white;
+  cursor: pointer;
+  border-radius: 5px;
+  text-decoration: none;
+  outline: none;
+  box-shadow: none;
+  border: none;
+
+  &:hover {
+    background-color: $dark-primary;
+  }
+
+  @include bp(md) {
+    padding: 10px;
+    font-size: 14px;
+  }
+}
+// End components
