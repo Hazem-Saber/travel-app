@@ -19,6 +19,8 @@
     <!-- Start Main -->
     <main class="main">
       <div class="page-width container">
+
+        <!-- Start Form -->
         <div class="app__form-container">
           <form class="app__form">
             <h3 class="font-h3">Trip Information</h3>
@@ -32,11 +34,26 @@
               <input class="form__input font-body" type="date" id="form-date">
               <p class="form__warning form__warning--date font-body">Please enter a date in the future</p>
             </div>
-            <input id="form-submit" class="btn-primary" type="submit" value="Submit">
+            <div class="form__CTA">
+              <input id="form-submit" class="btn btn--black" type="submit" value="Submit">
+              <a id="form-clear" class="btn btn--white" href="#">Clear</a>
+            </div>
           </form>
         </div>
+        <!-- End Form -->
 
-        <div class="app__results-container"></div>
+        <!-- Start Results -->
+        <div class="app__results-container">
+          <div class="app__results">
+            <h3 class="results__location font-h3"></h3>
+            <p class="results__days font-body"></p>
+            <span class="results__temp font-body"></span>
+            <span class="results__description font-body"></span>
+            <div class="results__image-container"></div>
+          </div>
+        </div>
+        <!-- End Results -->
+
       </div>
     </main>
     <!-- End Main -->

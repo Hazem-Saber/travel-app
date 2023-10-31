@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: './src/client/index.js',
@@ -30,7 +31,7 @@ module.exports = {
             }
           } 
         ]
-      }
+      },
     ]
   },
   optimization: {
@@ -41,6 +42,11 @@ module.exports = {
       template: "./src/client/views/index.html",
       filename: "./index.html",
     }),
-    new MiniCssExtractPlugin({ filename: "styles.css" })
+    new MiniCssExtractPlugin({ filename: "styles.css" }),
+    new CopyPlugin({
+      patterns: [
+        { from: "./src/client/media", to: "media" }
+      ],
+    }),
   ]
 }

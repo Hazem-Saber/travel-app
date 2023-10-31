@@ -142,29 +142,43 @@ $green: #448242;
 // End Utilities
 
 // Start components
-.btn-primary {
+.btn {
   padding: 16px;
   font-size: 16px;
   line-height: 1.6em;
   letter-spacing: 0.1em;
+  font-family: 'Lora', serif;
   text-transform: uppercase;
   font-weight: bold;
-  background-color: $dark-secondary;
-  color: $white;
   cursor: pointer;
   border-radius: 5px;
   text-decoration: none;
   outline: none;
   box-shadow: none;
   border: none;
-
-  &:hover {
-    background-color: $dark-primary;
-  }
+  text-align: center;
 
   @include bp(md) {
     padding: 10px;
     font-size: 14px;
+  }
+}
+
+.btn--black {
+  background-color: $dark-secondary;
+  color: #fff;
+
+  &:hover {
+    background-color: $dark-primary;
+  }
+}
+
+.btn--white {
+  background-color: $white;
+  color: $dark-primary;
+
+  &:hover {
+    background-color: $grey-very-light;
   }
 }
 // End components

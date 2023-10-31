@@ -57,21 +57,52 @@
           }
         }
 
+        .form__CTA {
+          display: flex;
+          justify-content: space-between;
+          gap: 16px;
+
+          & > * {
+            width: 50%;
+          }
+        }
       }
     }
 
     .app__results-container {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 32px;
-      padding: 32px;
-      background: $grey-light;
-      border-radius: 10px;
 
-      @include bp(md) {
-        padding: 20px;
+      .app__results {
+        display: none;
+        flex-direction: column;
+        gap: 16px;
+        padding: 32px;
+        background: $grey-light;
+        border-radius: 10px;
+  
+        @include bp(md) {
+          padding: 20px;
+        }
+
+        &.active {
+          display: flex;
+        }
+  
+        .results__description {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+  
+          .results__image {
+            width: 35px;
+          }
+        }
+  
+        .results__image {
+          max-width: 100%;
+        }
       }
     }
+
   }
 }
