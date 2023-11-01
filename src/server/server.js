@@ -31,6 +31,10 @@ function sendData(req, res) {
   res.send(projectData);
 };
 
+// Test Route
+const mockAPIResponse = require('./mockAPI.js');
+app.get('/test', (req, res) => res.send(mockAPIResponse))
+
 // POST Route
 app.post('/add', addData)
 
