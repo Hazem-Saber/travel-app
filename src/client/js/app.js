@@ -16,7 +16,7 @@ const currentDate = new Date();
 const submitForm = async (e) => {
   const tripLocation =  document.querySelector('#form-location').value;
   const tripDate =  new Date(document.querySelector('#form-date').value);
-  let calcDays;
+  const calcDays = Math.round(Math.abs((tripDate - currentDate) / (24 * 60 * 60 * 1000)));
 
   e.preventDefault();
 
@@ -29,14 +29,10 @@ const submitForm = async (e) => {
   if (tripLocation && tripDate) {
     if (checkLocation(tripLocation)) {
       if (checkDate(currentDate, tripDate)) {
-        // CalcDays
-        calcDays = Math.round(Math.abs((tripDate - currentDate) / (24 * 60 * 60 * 1000)));
-
         
         getGeonames(tripLocation)
         .then(cityData => weatherbit(cityData, calcDays))
         .then(cityData => pixabay(cityData))
-
 
       } else {
         warningDate.classList.add('active');
@@ -100,7 +96,6 @@ const weatherbit =  async (cityData, days) => {
         // Results Info
         resultsDays.textContent = `Your trip is in ${days} days.`;
         resultsTemp.textContent =`Current weather is ${temp}°C`;
-
         resultsDescription.innerHTML = `${weatherDescription}<img class='results__image' src='./media/${weatherIcon}.png' alt=${weatherDescription}>`;
 
       } catch (error) {
@@ -120,7 +115,6 @@ const weatherbit =  async (cityData, days) => {
         // Results Info
         resultsDays.textContent = `Your trip is in ${days} days.`;
         resultsTemp.textContent =`Predicted Forecast: High ${max_temp}°C - Low ${min_temp}°C`;
-
         resultsDescription.innerHTML = `${weatherDescription}<img class='results__image' src='./media/${weatherIcon}.png' alt=${weatherDescription}>`;
 
       } catch (error) {
@@ -142,12 +136,10 @@ const pixabay = async (cityData) => {
   
     try {
       const data = await res.json();
-
       console.log(data);
 
       if (data.total > 0) {
         const cityImageURL = data.hits[0].largeImageURL;
-  
         resultsImageContainer.innerHTML = `<img class='results__image' src='${cityImageURL}' alt=${cityData.name}>`;
       }
 
@@ -159,15 +151,15 @@ const pixabay = async (cityData) => {
 }
 
 // Clear Form
-const clearForm = function() {
+const clearForm = () => {
   const appForm = document.querySelector('.app__form');
+  appForm.reset();
   warningLocation.classList.remove('active');
   warningDate.classList.remove('active');
-  appForm.reset();
   clearResults();
 }
 
-const clearResults = function() {
+const clearResults = () => {
   appResults.classList.remove('active');
   resultsLocation.innerHTML = '';
   resultsDays.innerHTML = '';
@@ -175,42 +167,5 @@ const clearResults = function() {
   resultsDescription.innerHTML = '';
   resultsImageContainer.innerHTML = '';
 }
-
-// Function to POST data
-// const postData = async (url = '', data = {}) => {
-//   const res = await fetch(url, {
-//     method: 'POST',
-//     credentials: 'same-origin',
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     body: JSON.stringify(data)
-//   })
-
-//   try {
-//     const newData = await res.json();
-//     return newData;
-//   }
-//   catch (error) {
-//     console.error('error', error)
-//   }
-// };
-
-// Function to GET Project Data
-// const updateUI = async () => {
-//   const req = await fetch('/all');
-//   try {
-//     const allData = await req.json();
-//     console.log(allData);
-//     document.getElementById('date').innerHTML = `Date: ${allData.date}`;
-//     document.getElementById('temp').innerHTML = `Temperature: ${allData.temp} degrees`;
-//     document.getElementById('content').innerHTML = `Feelings: ${allData.content}`;
-//   }
-//   catch (error) {
-//     console.log("error", error);
-//   }
-// };
-
-
 
 export { submitForm, clearForm }

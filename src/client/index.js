@@ -4,7 +4,6 @@ import { checkLocation } from './js/checkLocation'
 import { checkDate } from './js/checkDate'
 
 document.querySelector('#form-submit').addEventListener('click', (e) => submitForm(e));
-
 document.querySelector('#form-clear').addEventListener('click', (e) => clearForm(e));
 
 import './styles/layout.scss';

@@ -4,6 +4,7 @@ const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: './src/client/index.js',
@@ -48,5 +49,6 @@ module.exports = {
         { from: "./src/client/media", to: "media" }
       ],
     }),
+    new WorkboxPlugin.GenerateSW()
   ]
 }
