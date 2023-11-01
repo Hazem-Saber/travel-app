@@ -11,6 +11,7 @@ const resultsTemp = document.querySelector('.results__temp');
 const resultsDescription = document.querySelector('.results__description');
 const resultsImageContainer = document.querySelector('.results__image-container');
 const currentDate = new Date();
+let appData = {};
 
 // Main Function
 const submitForm = async (e) => {
@@ -33,6 +34,8 @@ const submitForm = async (e) => {
         getGeonames(tripLocation)
         .then(cityData => weatherbit(cityData, calcDays))
         .then(cityData => pixabay(cityData))
+        .then(() => postData('http://localhost:8000/add', appData))
+        .then((projectData) => updateUI(projectData))
 
       } else {
         warningDate.classList.add('active');
@@ -59,17 +62,16 @@ const getGeonames = async (location) => {
     if (data.totalResultsCount > 0) {
       cityData = {
         name: data.geonames[0].name,
-        country: data.geonames[0].countryName,
         latitude: data.geonames[0].lat,
         longitude: data.geonames[0].lng
       }
 
-      // Results Location
-      resultsLocation.textContent = `${cityData.name}, ${cityData.country}`;
+      // Update appData object
+      appData.city = data.geonames[0].name;
+      appData.country = data.geonames[0].countryName;
     } else {
       warningLocation.classList.add('active');
     }
-    console.log(cityData);
     return cityData;
   } catch (error) {
     console.error('error', error)
@@ -93,10 +95,11 @@ const weatherbit =  async (cityData, days) => {
         const weatherIcon = data.data[0].weather.icon;
         const weatherDescription = data.data[0].weather.description;
 
-        // Results Info
-        resultsDays.textContent = `Your trip is in ${days} days.`;
-        resultsTemp.textContent =`Current weather is ${temp}°C`;
-        resultsDescription.innerHTML = `${weatherDescription}<img class='results__image' src='./media/${weatherIcon}.png' alt=${weatherDescription}>`;
+        // Update appData object
+        appData.days = days;
+        appData.temp = temp;
+        appData.weatherIcon = weatherIcon;
+        appData.weatherDescription = weatherDescription;
 
       } catch (error) {
         console.error('error', error)
@@ -112,10 +115,12 @@ const weatherbit =  async (cityData, days) => {
         const weatherIcon = data.data[0].weather.icon;
         const weatherDescription = data.data[0].weather.description;
 
-        // Results Info
-        resultsDays.textContent = `Your trip is in ${days} days.`;
-        resultsTemp.textContent =`Predicted Forecast: High ${max_temp}°C - Low ${min_temp}°C`;
-        resultsDescription.innerHTML = `${weatherDescription}<img class='results__image' src='./media/${weatherIcon}.png' alt=${weatherDescription}>`;
+        // Update appData object
+        appData.days = days;
+        appData.max_temp = max_temp;
+        appData.min_temp = min_temp;
+        appData.weatherIcon = weatherIcon;
+        appData.weatherDescription = weatherDescription;
 
       } catch (error) {
         console.error('error', error)
@@ -136,18 +141,68 @@ const pixabay = async (cityData) => {
   
     try {
       const data = await res.json();
-      console.log(data);
 
       if (data.total > 0) {
         const cityImageURL = data.hits[0].largeImageURL;
-        resultsImageContainer.innerHTML = `<img class='results__image' src='${cityImageURL}' alt=${cityData.name}>`;
-      }
 
-      appResults.classList.add('active');
+        // Update appData object
+        appData.imageURL = cityImageURL;
+      }
     } catch (error) {
       console.error('error', error)
     } 
   }
+}
+
+// postData
+const postData = async (url='', data={}) => {
+  if (Object.keys(data).length > 0) {
+    const res = await fetch(url, {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+  
+    try {
+      const projectData = await res.json();
+      console.log(projectData);
+      return projectData;
+    }
+    catch (error) {
+      console.error('error', error)
+    }
+  }
+}
+
+// updateUI
+const updateUI = (projectData) => {
+  
+  if (!projectData) return
+
+  // Location
+  if (projectData.city && projectData.country && projectData.city !== projectData.country) 
+    resultsLocation.textContent = `${projectData.city}, ${projectData.country}`;
+  else 
+    resultsLocation.textContent = `${projectData.city}`;
+
+  // Days
+  resultsDays.textContent = `Your trip is in ${projectData.days} days.`;
+
+  // Temp
+  if (projectData.days <= 7) resultsTemp.textContent =`Current weather is ${projectData.temp}°C`
+  else resultsTemp.textContent =`Predicted Forecast: High ${projectData.max_temp}°C - Low ${projectData.min_temp}°C`
+
+  // Description
+  resultsDescription.innerHTML = `${projectData.weatherDescription}<img class='results__image' src='./media/${projectData.weatherIcon}.png' alt=${projectData.weatherDescription}>`;
+
+  // Image
+  if (projectData.imageURL) resultsImageContainer.innerHTML = `<img class='results__image' src='${projectData.imageURL}' alt=${projectData.city}>`;
+
+  // Activate Results
+  appResults.classList.add('active');
 }
 
 // Clear Form
@@ -159,7 +214,9 @@ const clearForm = () => {
   clearResults();
 }
 
+// Helper Function clearResults
 const clearResults = () => {
+  appData = {};
   appResults.classList.remove('active');
   resultsLocation.innerHTML = '';
   resultsDays.innerHTML = '';

@@ -25,7 +25,7 @@ app.use(express.static('dist'));
 app.listen(8000, () => console.log('The app listening on http://localhost:8000'))
 
 // GET Route
-app.get('/all', sendData);
+app.get('/', sendData);
 
 function sendData(req, res) {
   res.send(projectData);
@@ -35,11 +35,28 @@ function sendData(req, res) {
 app.post('/add', addData)
 
 function addData (req, res) {
-  projectData = {
-    date: req.body.date,
-    temp: req.body.temp,
-    content: req.body.content
-  } 
+  if (req.body.days <= 7) {
+    projectData = {
+      days: req.body.days,
+      city: req.body.city,
+      country: req.body.country,
+      temp: req.body.temp,
+      weatherIcon: req.body.weatherIcon,
+      weatherDescription: req.body.weatherDescription,
+      imageURL: req.body.imageURL,
+    } 
+  } else {
+    projectData = {
+      days: req.body.days,
+      city: req.body.city,
+      country: req.body.country,
+      max_temp: req.body.max_temp,
+      min_temp: req.body.min_temp,
+      weatherIcon: req.body.weatherIcon,
+      weatherDescription: req.body.weatherDescription,
+      imageURL: req.body.imageURL,
+    } 
+  }
   console.log(projectData);
   res.send(projectData);
 }
